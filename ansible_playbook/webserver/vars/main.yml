@@ -1,0 +1,4 @@
+redhat_webserver: httpd
+ubuntu_webserver: apache2
+redhat_web_services: httpd
+ubuntu_web_services: apache2

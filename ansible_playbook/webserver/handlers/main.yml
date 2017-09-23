@@ -1,0 +1,4 @@
+- name: Restarthttpd
+  service: name={{ redhat_web_services }} state=restarted
+- name: Restartapache2
+  service: name={{ ubuntu_web_services }} state=restarted 

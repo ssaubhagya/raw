@@ -1,0 +1,19 @@
+- name: Install httpd server 
+  yum: name={{ redhat_webserver }} state=present
+  notify: Restarthttpd
+  when: ansible_os_family == 'RedHat'
+- name: Install apache2 server
+  apt: name={{ ubuntu_webserver }} state=present
+  notify: Restartapache2
+  when: ansible_os_family == 'Debian'
+- name: copy the conf file redhat
+  copy: src=/home/ansible/playbooks/roles/webserver/files/sai.conf dest=/etc/httpd/conf.d/sai.conf 
+  notify: Restarthttpd
+  when: ansible_os_family == 'RedHat'
+- name: copy the conf file for ubuntu
+  copy: src=/home/ansible/playbooks/roles/webserver/files/sai.conf dest=/etc/apache2/sites-available/sai.conf
+  notify: Restartapache2
+  when: ansible_os_family == 'Debian'
+- name: copy index file
+  copy:  src=/home/ansible/playbooks/roles/webserver/files/index.html dest=/var/www/html/index.html mode=0777
+ 
