@@ -1,0 +1,8 @@
+--- # Web server installation and up & running
+- hosts: web
+  user: ansible
+  sudo: yes
+  gather_facts: yes
+  roles:
+   - { role: redhat_webserver when: ansible_os_family == 'RedHat' }
+      
