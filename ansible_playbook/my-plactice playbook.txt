@@ -1,0 +1,81 @@
+---- This is variable declairation & include example
+- hosts: appservers
+  vars: 
+   - server_name: ec2.test.com
+  vars_files:
+   - variablefiles.yml
+  tasks:
+   - name: install elinks
+     yum: pkg=elinks state=installed
+##################
+--- Variable prompt example
+- hosts: appservers
+  user: ansible
+  sudo: yes
+  connection: ssh
+  gather_facts: yes
+  vars_prompt:
+   - name: pkg_name
+     prompt: Install which package
+  tasks:
+   - name: Installation of the package you entered
+     action: yum name={{ pkg_name }} state=installed
+	 
+##########################
+--- # EC2 Creation
+
+--- # Ec2 creation
+- hosts: localhost
+  user: ansible
+  become: true
+  vars:
+    key_name: sai-1
+    instance_type: t2.micro
+    image: ami-6d7a4d17
+    region: us-east-1
+  tasks:
+    - name: Launch ec2
+      ec2:
+        key_name: "{{ key_name }}"
+        group: default
+        instance_type: "{{ instance_type }}"
+        image: "{{ image }}"
+        wait: true
+        region: "{{ region }}"
+        count: 1
+        aws_access_key: AKIAJB4UOIB7U3E2N6LA
+        aws_secret_key: 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
+		
+###################
+---# User creation with key copy
+- hosts: webserver
+  user: ansible
+  become: true
+
+  vars:
+    users:
+      - username: bhavna
+      - username: puja
+      - username: raghav
+      - username: purushottam
+
+  tasks:
+
+  - name: Add users | create users, shell, home dirs
+    user: name={{ item.username }} shell=/bin/bash createhome=yes comment='create with ansible'
+    with_items: '{{users}}'
+
+  - name: Setup | authorized key upload
+    authorized_key: user={{ item.username }}
+      key="{{ lookup('file', '/home/ansible/pub_keys/{{ item.username }}.pub') }}"
+    with_items: '{{users}}'
+
+
+
+
+
+
+
+  
+	 
+	 
