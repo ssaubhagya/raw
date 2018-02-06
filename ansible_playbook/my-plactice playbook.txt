@@ -43,8 +43,8 @@
         wait: true
         region: "{{ region }}"
         count: 1
-        aws_access_key: AKIAJB4UOIB7U3E2N6LA
-        aws_secret_key: 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
+        aws_access_key: AKIAJB4UOIB7U3E
+        aws_secret_key: Ls0USTv3y5zSriOD+/1HaK00v
 		
 ###################
 ---# User creation with key copy
